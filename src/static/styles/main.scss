@@ -1,5 +1,120 @@
-$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/_mixins.scss';
-@import '~bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+$background-color: #2D2F31;
+$main-block-color: #56585a;
+$text-color: white;
+$graph-designer-color: #DCD8D6;
+$button-color: #EC7149;
+$hover-button-color: #bc5a3a;
 
-// can add Boostrap overrides, additional Sass/CSS below...
+$border-radius: 12px;
+$padding: 15px;
+
+body
+{
+	color: $text-color;
+	margin: 0;
+	background: $background-color;
+}
+
+.container
+{
+	height: 100vh;
+	width: 100%;
+	display: grid;
+	grid-template-rows: 100px auto 100px;
+	grid-template-columns: 1fr 1fr 1fr 250px;
+	grid-template-areas:
+		"header header header header"
+		"content content content sidebar"
+		". footer . ."
+}
+
+.header
+{
+	grid-area: header;
+}
+
+.graph-designer
+{
+	grid-area: content;
+	background-color: $main-block-color;
+	padding: $padding;
+}
+
+.sidebar
+{
+	grid-area: sidebar;
+	display: grid;
+	margin: 0px $padding 0px 0px;
+	border-radius: 0px $border-radius $border-radius 0px;
+	background-color: $main-block-color;
+	grid-row-gap: 10px;
+	padding: $padding;
+	grid-template-rows: 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr;
+	grid-template-areas:
+		"description"
+		"addNode"
+		"addLink"
+		"delete"
+}
+
+.footer
+{
+	grid-area: footer;
+	background-color: $main-block-color;
+	padding: $padding;
+	border-radius: 0px 0px $border-radius $border-radius;
+	margin: 0px 0px $padding 0px;
+}
+
+.description
+{
+	grid-area: description;
+	font-size: 1em;
+}
+
+.addNode
+{
+	grid-area: addNode;
+}
+
+.addLink
+{
+	grid-area: addLink;
+}
+
+.delete
+{
+	grid-area: delete;
+}
+
+.button
+{
+	background-color: $button-color;
+	text-align: center;
+	text-decoration: none;
+	font-size: 2em;
+	border-radius: $border-radius;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.button:hover
+{
+	background-color: $hover-button-color;
+}
+
+svg
+{
+	background-color: $graph-designer-color;
+	width: 100%;
+	height: 100%;
+	border-radius: $border-radius;
+}
+
+h1
+{
+	text-align: center;
+}

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<title>PageRank Demo</title>
+		<style>
+			body
+			{
+				color: white;
+				margin:0;
+				background: #2D2F31;
+				height: 100vh;
+				width: 100%;
+				display: grid;
+				grid-template-rows: 100px auto 100px;
+				grid-template-columns: 1fr 1fr 1fr 250px;
+				grid-template-areas:
+				"header header header header"
+				"content content content sidebar"
+				". footer . ."
+			}
+
+			header
+			{
+				grid-area: header;
+			}
+
+			bla
+			{
+				grid-area: content;
+				background-color: #56585a;
+				padding: 15px;
+			}
+
+			sidebar
+			{
+				grid-area: sidebar;
+				display: grid;
+				margin: 0px 15px 0px 0px;
+				border-radius: 0px 12px 12px 0px;
+				background-color: #56585a;
+				grid-row-gap: 10px;
+				padding: 15px;
+				grid-template-rows: 1fr 1fr 1fr 1fr;
+				grid-template-columns: 1fr;
+				grid-template-areas:
+				"description"
+				"addNode"
+				"addLink"
+				"delete"
+			}
+
+			footer
+			{
+				grid-area: footer;
+				background-color: #56585a;
+				padding: 15px;
+				border-radius: 0px 0px 12px 12px;
+				margin: 0px 0px 15px 0px;
+			}
+
+			description
+			{
+				grid-area: description;
+				font-size: 1em;
+			}
+
+			addNode
+			{
+				grid-area: addNode;
+			}
+
+			.button
+			{
+				background-color: #EC7149;
+				text-align: center;
+				text-decoration: none;
+				font-size: 2em;
+				border-radius: 12px;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.button:hover
+			{
+			    background-color: #bc5a3a;
+			}
+
+			addLink
+			{
+				grid-area: addLink;
+			}
+
+			delete
+			{
+				grid-area: delete;
+			}
+		</style>
+
+		<script>
+			var lastMouseDownPosition;
+
+			function onSvgClicked(event) {
+				var svg = document.querySelectorAll("svg")[0];
+				
+				if(svg !== event.target) {
+					window.alert("Clicked existing event...");
+					return;
+				}
+
+				var dim = event.target.getBoundingClientRect();
+				var x = event.clientX - dim.left;
+				var y = event.clientY - dim.top;
+
+				if(lastMouseDownPosition === 'undefined' || lastMouseDownPosition.x !== x
+					|| lastMouseDownPosition.y !== y) {
+					return;
+				}
+
+				createCircle({x:x, y:y});
+			}
+
+			function createCircle(point) {
+				var svg = document.querySelectorAll("svg")[0];
+				
+				var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+				newElement.setAttribute("style", "fill:#349B89;stroke:#56585a;stroke-width:2;");
+				newElement.setAttribute("r", "15px");
+				newElement.setAttribute("cx", point.x);
+				newElement.setAttribute("cy", point.y);
+				svg.appendChild(newElement);
+			}
+
+			function onMouseDown(event) {
+				var svg = document.querySelectorAll("svg")[0];
+
+				if(svg !== event.target) {
+					lastMouseDownPosition = undefined;
+					return;
+				}
+				
+				var dim = event.target.getBoundingClientRect();
+				var x = event.clientX - dim.left;
+				var y = event.clientY - dim.top;
+
+				lastMouseDownPosition = {x:x, y:y};
+				document.querySelectorAll("svg")[0].onmousemove = (event) => onLinkPreview(event);
+			}
+
+			function onDeactivateLinkPreview(event) {
+				document.querySelectorAll("svg")[0].onmousemove = undefined;
+
+				var svg = document.querySelectorAll("svg")[0];
+				var linkPreview = document.querySelectorAll("svg line[id='linkPreview']")[0];
+
+				if(svg !== undefined && ('mouseup' === event.type || svg === event.target) &&linkPreview !== undefined) {
+					svg.removeChild(linkPreview);
+				}
+			}
+
+			function onLinkPreview(event) {
+				var svg = document.querySelectorAll("svg")[0];
+
+				if(svg !== event.target) {
+					return;
+				}
+
+				var linkPreview = document.querySelectorAll("svg line[id='linkPreview']")[0];
+
+				if(linkPreview !== undefined) {
+					svg.removeChild(linkPreview);
+				}
+				
+				var dim = event.target.getBoundingClientRect();
+				var x = event.clientX - dim.left;
+				var y = event.clientY - dim.top;
+
+				var newElement = lineBetween(lastMouseDownPosition, {x:x, y:y});
+				newElement.setAttribute("id", "linkPreview");
+				svg.appendChild(newElement);
+			}
+
+			function lineBetween(a,b) {
+				if(a === b) {
+					var length = 50;
+					var bla = length*(28/Math.sqrt(Math.pow(length,2) + Math.pow(length,2)));
+					var bla2 = length*(15/Math.sqrt(Math.pow(length,2) + Math.pow(length,2)));
+
+					var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+					newElement.setAttribute("d", "M"+ (a.x-bla2) +" "+ (a.y-bla2) +" C "+
+						(a.x- length) +" "+ (a.y-length) +", "+
+						(a.x+length) +" "+ (a.y-length) +", "+
+						(a.x+ bla) +" "+ (a.y- bla) );
+					newElement.setAttribute("marker-end", "url(#triangle)");
+					newElement.setAttribute("style", "stroke:#56585a;stroke-width:2;fill:none;");
+				}
+				else {
+					var newElement = document.createElementNS("http://www.w3.org/2000/svg", 'line');
+					newElement.setAttribute("x1", a.x);
+					newElement.setAttribute("y1", a.y);
+					newElement.setAttribute("x2", b.x);
+					newElement.setAttribute("y2", b.y);
+					newElement.setAttribute("marker-end", "url(#triangle)");
+					newElement.setAttribute("style", "stroke:#56585a;stroke-width:2;");
+				}
+
+				return newElement;
+			}
+		</script>
+	</head>
+	<body>
+		<header>
+			<h1 style="text-align: center;">An interactive PageRank example</h1>
+		</header>
+
+		<bla>
+		<svg style="width: 100%; height: 100%; border-radius: 12px; background-color: #DCD8D6;"
+				onclick="onSvgClicked(event)" onmousedown="onMouseDown(event)" onmouseup="onDeactivateLinkPreview(event)">
+			<marker xmlns="http://www.w3.org/2000/svg" id="triangle" viewBox="0 0 10 10" refX="0" refY="5"
+				markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto" style="stroke:#56585a;fill:#56585a;">
+			    <path d="M 0 0 L 10 5 L 0 10 z"/>
+			</marker>
+		</svg>
+		</bla>
+
+		<sidebar>
+			<description>
+				Todo: Beschreibung der aktuellen Aktion...
+			</description>
+			<addNode class="button">
+				Add Node
+			</addNode>
+			<addLink class="button">
+				add Link
+			</addLink>
+			<delete class="button">
+				Clear
+			</delete>
+		</sidebar>
+		
+		<footer>
+			<div class="button" style="height: 100%;">
+			Calculate PageRank
+			</div>
+		</footer>
+	</body>
+
+	<script>
+		var svg = document.querySelectorAll("svg")[0];
+		var origin = {x:250, y:150};
+		var source = {x:50, y:50};
+
+		var x = source.x - origin.x;
+		var y = source.y - origin.y;
+		var radiusTimesInvertedLength = 28/Math.sqrt(Math.pow(x,2) + Math.pow(y,2));
+
+		svg.appendChild(lineBetween(source, {x: origin.x+ (x*radiusTimesInvertedLength), y: origin.y+ (y*radiusTimesInvertedLength)}));
+		svg.appendChild(lineBetween(source, source));
+		svg.appendChild(lineBetween(origin, origin));
+
+		createCircle(source);
+		createCircle(origin);
+
+		origin = {x:250, y:25};
+		svg.appendChild(lineBetween(origin, origin));
+		createCircle(origin);
+
+	</script>
+</html>
