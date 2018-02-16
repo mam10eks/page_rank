@@ -9,8 +9,9 @@
     "url": "https://github.com/mam10eks/page-rank"
   },
   "scripts": {
+    "prestart": "elm-format . && elm test",
     "start": "webpack-dev-server --hot --inline",
-    "prebuild": "rimraf dist",
+    "prebuild": "rimraf dist && elm-format . && elm test",
     "build": "webpack",
     "reinstall": "npm i rimraf && rimraf node_modules && npm uninstall -g elm && npm i -g elm && npm i && elm package install"
   },
@@ -19,6 +20,8 @@
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.27.3",
     "elm": "^0.18.0",
+    "elm-format": "^0.6.1-alpha",
+    "elm-test": "^0.18.12",
     "elm-webpack-loader": "^4.3.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",

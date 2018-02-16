@@ -4,6 +4,7 @@ $text-color: white;
 $graph-designer-color: #DCD8D6;
 $button-color: #EC7149;
 $hover-button-color: #bc5a3a;
+$secondary-color: #349B89;
 
 $border-radius: 12px;
 $padding: 15px;
@@ -112,6 +113,31 @@ svg
 	width: 100%;
 	height: 100%;
 	border-radius: $border-radius;
+}
+
+path
+{
+	stroke: $main-block-color;
+	stroke-width: 2;
+}
+
+circle
+{
+	fill: $secondary-color;
+	stroke: $main-block-color;
+	stroke-width: 2;
+}
+
+line
+{
+	stroke: $main-block-color;
+	stroke-width: 2;
+}
+
+marker
+{
+	stroke: $main-block-color;
+	fill: $main-block-color;
 }
 
 h1

@@ -1,25 +1,26 @@
 module Main exposing (..)
 
-import Html exposing ( beginnerProgram )
-import Components.Hello exposing ( hello )
-import Components.View exposing ( view )
+import Window
+import Array
+import Set
+import Html exposing ( program )
+import View.View exposing ( view )
+import Components.Update exposing ( .. )
+import Components.Model exposing ( .. )
 
 
-main = beginnerProgram { model = model, view = view, update = update }
+init : ( Model, Cmd msg )
+init = ( Model Array.empty Set.empty (SvgInformations 0 0 0 0) False Nothing Nothing, Cmd.none )
 
 
--- MODEL
-type alias Model = Int
+main : Program Never Model Components.Update.Msg
+main = program  { init = init
+                , view = view
+                , update = update
+                , subscriptions = subscriptions
+                }
 
-model : Model
-model = 0
 
-
--- UPDATE
-type Msg = NoOp | Increment
-
-update : Msg -> Model -> Model
-update msg model =
-  case msg of
-    NoOp -> model
-    Increment -> model + 1
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Window.resizes (\_ -> Resize)
