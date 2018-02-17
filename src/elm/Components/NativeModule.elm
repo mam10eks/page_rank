@@ -5,4 +5,5 @@ import Native.NativeModule
 
 
 svgMetrics : () -> SvgInformations
-svgMetrics = Native.NativeModule.svgMetrics
+svgMetrics =
+    Native.NativeModule.svgMetrics
