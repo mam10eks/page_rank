@@ -108,10 +108,10 @@ if (isProd === true) {
                 filename: 'static/css/[name]-[hash].css',
                 allChunks: true,
             }),
-            new CopyWebpackPlugin([{
+            new CopyWebpackPlugin([/*{
                 from: 'src/static/img/',
                 to: 'static/img/'
-            }, {
+            },*/ {
                 from: 'src/favicon.ico'
             }]),
 

@@ -22,7 +22,7 @@
     "elm": "^0.18.0",
     "elm-format": "^0.6.1-alpha",
     "elm-test": "^0.18.12",
-    "elm-webpack-loader": "^4.3.0",
+    "elm-webpack-loader": "^4.5.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.1",
     "html-webpack-plugin": "^2.28.0",
