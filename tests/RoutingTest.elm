@@ -19,6 +19,7 @@ pathLocation : String -> Location
 pathLocation path =
     Location "" "" "" "" "" "" path "" "" "" ""
 
+
 testDeltaToUrl : Test.Test
 testDeltaToUrl =
     Test.describe "Test the url changes triggered by deltaToUrl"

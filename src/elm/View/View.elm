@@ -1,12 +1,13 @@
 module View.View exposing (view)
 
 import Components.Model exposing (..)
+import Components.Routing exposing (pageToHref)
 import View.GraphDesigner exposing (graphDesigner)
+import View.OnClick exposing (onPreventDefaultClick)
+import View.Assets exposing (pageRankAssetImage)
+import Html.Events exposing (onClick)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Components.Routing exposing (pageToHref)
-import Html.Events exposing (onClick)
-import View.OnClick exposing (onPreventDefaultClick)
 
 
 header : Model -> Html Msg
@@ -29,7 +30,8 @@ menu =
 
 menuElement : String -> Page -> Html Msg
 menuElement menuName page =
-    a [ class "menu-content-element", onPreventDefaultClick (NavigateToPage page), href ("" ++ (pageToHref page)), id ("menu-link-" ++ menuName) ] [ div [] [ img [ src "https://www.online-solutions-group.de/Blog/wp-content/uploads/sites/3/2017/11/google-pagerank.jpg" ] [], div [ class "menu-content-element-text" ] [ text menuName ] ] ]
+    a [ class "menu-content-element", onPreventDefaultClick (NavigateToPage page), href ("" ++ (pageToHref page)), id ("menu-link-" ++ menuName) ]
+        [ pageRankAssetImage, text menuName ]
 
 
 sidebar : Model -> Html Msg

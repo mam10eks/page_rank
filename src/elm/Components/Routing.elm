@@ -30,8 +30,10 @@ urlToMessages location =
 
         "/about" ->
             [ NavigateToPage About ]
+
         "/tutorial" ->
             [ NavigateToPage Tutorial ]
+
         other ->
             [ NavigateToPage MainPage ]
 
@@ -50,5 +52,6 @@ pageToHref page =
 
         About ->
             "about"
+
         Tutorial ->
             "tutorial"

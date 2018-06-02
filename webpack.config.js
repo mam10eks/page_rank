@@ -33,18 +33,19 @@ var commonConfig = {
         modules: ['node_modules']
     },
     module: {
-        noParse: /\.elm$/,
+        /*noParse: /\.elm$/,*/
         rules: [{
             test: /\.(eot|ttf|woff|woff2|svg)$/,
             use: 'file-loader?publicPath=../../&name=static/css/[hash].[ext]'
+        }, {
+            test: /\.(gif|png|jpe?g|svg)$/i,
+            use: ['url-loader?prefix=img/&limit=5000000', 'image-webpack-loader']
+        }, {
+            test: /\.sc?ss$/,
+            use: ['style-loader', 'css-loader', {loader: 'postcss-loader', options: {plugins: [autoprefixer()]}}, 'sass-loader']
         }]
     },
     plugins: [
-        new webpack.LoaderOptionsPlugin({
-            options: {
-                postcss: [autoprefixer()]
-            }
-        }),
         new HtmlWebpackPlugin({
             template: 'src/static/index.html',
             inject: 'body',
@@ -56,6 +57,7 @@ var commonConfig = {
 // additional webpack settings for local env (when invoked by 'npm start')
 if (isDev === true) {
     module.exports = merge(commonConfig, {
+        mode: 'development',
         entry: [
             'webpack-dev-server/client?http://localhost:8080',
             entryPath
@@ -71,6 +73,13 @@ if (isDev === true) {
                 test: /\.elm$/,
                 exclude: [/elm-stuff/, /node_modules/],
                 use: [{
+                    loader: 'elm-assets-loader',
+                    options: {
+                      module: 'View.Assets',
+                      tagger: 'Asset',
+                      package: 'mam10eks/page-rank'
+                    }
+                  }, {
                     loader: 'elm-webpack-loader',
                     options: {
                         verbose: true,
@@ -78,9 +87,6 @@ if (isDev === true) {
                         debug: true
                     }
                 }]
-            },{
-                test: /\.sc?ss$/,
-                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
             }]
         }
     });
@@ -89,41 +95,24 @@ if (isDev === true) {
 // additional webpack settings for prod env (when invoked via 'npm run build')
 if (isProd === true) {
     module.exports = merge(commonConfig, {
+        mode: 'production',
         entry: entryPath,
         module: {
             rules: [{
                 test: /\.elm$/,
                 exclude: [/elm-stuff/, /node_modules/],
-                use: 'elm-webpack-loader'
-            }, {
-                test: /\.sc?ss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: ['css-loader', 'postcss-loader', 'sass-loader']
-                })
+                use: [ {
+                    loader: 'elm-assets-loader',
+                    options: {
+                      module: 'View.Assets',
+                      tagger: 'Asset',
+                      package: 'mam10eks/page-rank'
+                    }
+                  }, 'elm-webpack-loader']
             }]
         },
         plugins: [
-            new ExtractTextPlugin({
-                filename: 'static/css/[name]-[hash].css',
-                allChunks: true,
-            }),
-            new CopyWebpackPlugin([/*{
-                from: 'src/static/img/',
-                to: 'static/img/'
-            },*/ {
-                from: 'src/favicon.ico'
-            }]),
-
-            // extract CSS into a separate file
-            // minify & mangle JS/CSS
-            new webpack.optimize.UglifyJsPlugin({
-                minimize: true,
-                compressor: {
-                    warnings: false
-                }
-                // mangle:  true
-            })
+            new CopyWebpackPlugin([{from: 'src/favicon.ico' }])
         ]
     });
 }
