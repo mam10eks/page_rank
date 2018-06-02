@@ -4,6 +4,26 @@ import Array
 import Set exposing (Set)
 
 
+type Msg
+    = CreateNode ClientSvgPosition
+    | LinkPreviewPointerMoved ClientSvgPosition
+    | LinkPreviewTargetChanged (Maybe Int)
+    | InterruptLinkPreview
+    | CreateLinkFromTo Int Int
+    | Resize
+    | Clear
+    | FocusOnNode Int
+    | NavigateToPage Page
+
+
+type Page
+    = MainPage
+    | Tutorial
+    | NextAchievements
+    | Settings
+    | About
+
+
 type alias ClientSvgPosition =
     { x : Int
     , y : Int
@@ -32,4 +52,5 @@ type alias Model =
     , focussedNode : Maybe Int
     , linkPreviewEndPosition : Maybe RelativePosition
     , linkPreviewEndNode : Maybe Int
+    , currentPage : Page
     }

@@ -9,7 +9,8 @@
     "url": "https://github.com/mam10eks/page-rank"
   },
   "scripts": {
-    "prestart": "elm-format --yes . && elm test",
+    "test": "elm test",
+    "prestart": "elm-format --yes . && npm test",
     "start": "webpack-dev-server --hot --inline",
     "prebuild": "rimraf dist && elm-format --yes . && elm test",
     "build": "webpack",

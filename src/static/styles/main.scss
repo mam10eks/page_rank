@@ -9,6 +9,8 @@ $secondary-color: #349B89;
 $border-radius: 12px;
 $padding: 15px;
 
+$menu-element-height: 5*$padding;
+
 body
 {
 	color: $text-color;
@@ -22,16 +24,68 @@ body
 	width: 100%;
 	display: grid;
 	grid-template-rows: 100px auto 100px;
-	grid-template-columns: 1fr 1fr 1fr 250px;
+	grid-template-columns: 75px 1fr 1fr 1fr 75px 175px 75px;
 	grid-template-areas:
-		"header header header header"
-		"content content content sidebar"
-		". footer . ."
+		"menu header header header header header ."
+		"content content content content content sidebar sidebar"
+		". . footer . . . ."
 }
 
 .header
 {
 	grid-area: header;
+}
+
+.menu
+{
+	grid-area: menu;
+	background-color: $main-block-color;
+}
+
+.menu-content
+{
+	display: none;
+	position: absolute;
+	background-color: $main-block-color;
+	padding: $padding $padding 0 $padding;
+	z-index: 1;
+}
+
+.menu-content-element
+{
+	font-size: 1.5em;
+	overflow: hidden;
+	left: $padding;
+	right: $padding;
+	height: $menu-element-height;
+	color: $text-color;
+	display: block;
+	margin-bottom: $padding;
+	text-decoration: none;
+	border: ($padding/3) solid $background-color;
+}
+
+.menu-content-element-text
+{
+	display: inline-flex;
+	justify-content:center;
+    align-content:center;
+	padding: 0 $padding;
+}
+
+.menu-content-element img
+{
+	height: $menu-element-height;
+}
+
+.menu-content-element:hover
+{
+	background-color: $graph-designer-color;
+	color: $background-color;
+}
+
+.menu:hover .menu-content {
+    display: block;
 }
 
 .graph-designer
@@ -107,6 +161,26 @@ body
 	background-color: $hover-button-color;
 }
 
+.modal {
+    position: fixed;
+    z-index: 1;
+    padding-top: 150px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: $main-block-color;
+    margin: auto;
+    padding: 20px;
+	border: 2px solid $background-color;
+    width: 80%;
+}
+
 svg
 {
 	background-color: $graph-designer-color;
@@ -143,4 +217,53 @@ marker
 h1
 {
 	text-align: center;
+}
+
+@media not screen and (max-width: 750px)
+{
+	.menu-content
+	{
+		min-width: 500px;
+		left: 0px;
+		top: 100px;
+	}
+}
+
+@media screen and (max-width: 750px)
+{
+	.container
+	{
+		grid-template-rows: 50px auto 100px 100px;
+		grid-template-columns: 75px 1fr 1fr 1fr 75px;
+		grid-template-areas:
+		    ". menu menu menu ."
+			"content content content content content"
+			". sidebar sidebar sidebar ."
+			". footer footer footer ."
+	}
+
+	.menu-content
+	{
+		left: 75px;
+		right: 75px;
+		top: 50px;
+	}
+
+	.header
+	{
+		display: none;
+	}
+
+	.sidebar
+	{
+		margin: 0px 0px 0px 0px;
+		border-radius: 0px 0px 0px 0px;
+		grid-gap: 10px;
+		padding: $padding;
+		grid-template-rows: 1fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-areas:
+			"description description description"
+			"addNode addLink delete"
+	}
 }

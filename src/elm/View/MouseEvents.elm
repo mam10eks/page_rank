@@ -1,7 +1,6 @@
-module View.MouseEvents exposing (graphDesignerMouseEvents, circleMouseEvents)
+module View.MouseEvents exposing (graphDesignerMouseEvents, circleMouseEvents, defaultOptions)
 
 import Components.Model exposing (..)
-import Components.Update exposing (..)
 import Json.Decode as Json exposing (..)
 import VirtualDom
 

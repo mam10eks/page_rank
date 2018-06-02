@@ -1,7 +1,6 @@
 module View.GraphDesigner exposing (graphDesigner)
 
 import Components.Model exposing (..)
-import Components.Update exposing (..)
 import View.MouseEvents
 import View.Math
 import Html exposing (..)

@@ -6,17 +6,6 @@ import Array
 import Set
 
 
-type Msg
-    = CreateNode ClientSvgPosition
-    | LinkPreviewPointerMoved ClientSvgPosition
-    | LinkPreviewTargetChanged (Maybe Int)
-    | InterruptLinkPreview
-    | CreateLinkFromTo Int Int
-    | Resize
-    | Clear
-    | FocusOnNode Int
-
-
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     let
@@ -96,6 +85,13 @@ update msg model =
                     | linkPreview = True
                     , focussedNode = Just id
                     , linkPreviewEndNode = Just id
+                  }
+                , Cmd.none
+                )
+
+            NavigateToPage page ->
+                ( { ret
+                    | currentPage = page
                   }
                 , Cmd.none
                 )
