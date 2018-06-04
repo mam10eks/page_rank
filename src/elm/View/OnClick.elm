@@ -8,7 +8,6 @@ import Json.Decode exposing (..)
 import Html exposing (..)
 import Components.Model exposing (..)
 import View.MouseEvents exposing (defaultOptions)
-import Html.Attributes exposing (..)
 import VirtualDom exposing (onWithOptions)
 
 

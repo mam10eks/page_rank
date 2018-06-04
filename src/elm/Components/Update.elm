@@ -96,6 +96,13 @@ update msg model =
                 , Cmd.none
                 )
 
+            ActivateMode newMode ->
+                ( { ret
+                    | inputMode = newMode
+                  }
+                , Cmd.none
+                )
+
 
 createRelativeNode : ClientSvgPosition -> SvgInformations -> RelativePosition
 createRelativeNode clientSvgPosition svgInformation =

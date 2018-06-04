@@ -1,6 +1,7 @@
 module TestUtil exposing (..)
 
 import Components.Model exposing (..)
+import I18N exposing (..)
 import Array
 import Set exposing (Set)
 
@@ -16,3 +17,5 @@ testModel =
         Nothing
         Nothing
         MainPage
+        NodeMode
+        English

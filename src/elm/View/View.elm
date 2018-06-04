@@ -7,47 +7,53 @@ import View.OnClick exposing (onPreventDefaultClick)
 import View.Assets exposing (pageRankAssetImage)
 import Html.Events exposing (onClick)
 import Html exposing (..)
+import I18N exposing (..)
 import Html.Attributes exposing (..)
 
 
 header : Model -> Html Msg
 header model =
-    div [ class "header" ] [ h1 [] [ text ("An Interactive PageRank Example") ] ]
+    div [ class "header" ] [ h1 [] [ i18n model.language Header ] ]
 
 
-menu : Html Msg
-menu =
+menu : Model -> Html Msg
+menu model =
     div [ class "menu" ]
-        [ text "Menu"
+        [ i18n model.language Menu
         , div [ class "menu-content" ]
-            [ menuElement "Tutorial" Tutorial
-            , menuElement "Next Achievement" NextAchievements
-            , menuElement "Settings" Settings
-            , menuElement "About" About
+            [ menuElement model Tutorial
+            , menuElement model NextAchievements
+            , menuElement model Settings
+            , menuElement model About
             ]
         ]
 
 
-menuElement : String -> Page -> Html Msg
-menuElement menuName page =
-    a [ class "menu-content-element", onPreventDefaultClick (NavigateToPage page), href ("" ++ (pageToHref page)), id ("menu-link-" ++ menuName) ]
-        [ pageRankAssetImage, text menuName ]
+menuElement : Model -> Page -> Html Msg
+menuElement model page =
+    a [ class "menu-content-element", onPreventDefaultClick (NavigateToPage page), href (pageToHref page), id ("menu-link-" ++ (toString page)) ]
+        [ pageRankAssetImage, i18n model.language (MenuTitle page) ]
 
 
 sidebar : Model -> Html Msg
 sidebar model =
-    div [ class "sidebar" ]
-        [ div [ class "description" ] [ text "Beschreibung der Möglichkeiten" ]
-        , div [ class "addNode button" ] [ text "Add Node" ]
-        , div [ class "addLink button" ] [ text "Add Link" ]
-        , div [ class "delete button", onClick Clear ] [ text "Clear" ]
-        ]
+    let (nodeClassSuffix, linkClassSuffix) = 
+        case model.inputMode of
+            NodeMode -> ("activeButton", "")
+            LinkMode -> ("", "activeButton")
+    in
+        div [ class "sidebar" ]
+            [ div [ class "description" ] [ i18n model.language (ModeDescription model.inputMode) ]
+            , div [ class ("addNode button " ++ nodeClassSuffix), onClick (ActivateMode NodeMode)] [ i18n model.language NodeModeButton ]
+            , div [ class ("addLink button " ++ linkClassSuffix), onClick (ActivateMode LinkMode)] [ i18n model.language LinkModeButton ]
+            , div [ class "delete button", onClick Clear ] [ i18n model.language ClearButton ]
+            ]
 
 
-footer : Html Msg
-footer =
+footer : Model -> Html Msg
+footer model =
     div [ class "footer" ]
-        [ div [ class "button", style [ ( "height", "100%" ) ] ] [ text "Calculate PageRank" ]
+        [ div [ class "button", style [ ( "height", "100%" ) ] ] [ i18n model.language CalculatePageRankButton ]
         ]
 
 
@@ -74,11 +80,11 @@ view model =
                 [ onClick (NavigateToPage MainPage) ]
     in
         div ([ class "container" ] ++ hideModalEvents)
-            ([ menu
+            ([ menu model
              , header model
              , graphDesigner model
              , sidebar model
-             , footer
+             , footer model
              ]
                 ++ (modal)
             )

@@ -4,6 +4,7 @@ $text-color: white;
 $graph-designer-color: #DCD8D6;
 $button-color: #EC7149;
 $hover-button-color: #bc5a3a;
+$hover-button-border: #8d432b;
 $secondary-color: #349B89;
 
 $border-radius: 12px;
@@ -113,6 +114,13 @@ body
 .button:hover
 {
 	background-color: $hover-button-color;
+	border: 2px solid $hover-button-border;
+}
+
+.activeButton
+{
+	background-color: $hover-button-color !important;
+	border: 2px solid $hover-button-border;
 }
 
 .menu-content

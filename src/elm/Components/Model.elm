@@ -12,6 +12,7 @@ type Msg
     | CreateLinkFromTo Int Int
     | Resize
     | Clear
+    | ActivateMode InputMode
     | FocusOnNode Int
     | NavigateToPage Page
 
@@ -22,6 +23,16 @@ type Page
     | NextAchievements
     | Settings
     | About
+
+
+type InputMode
+    = NodeMode
+    | LinkMode
+
+
+type Language
+    = English
+    | German
 
 
 type alias ClientSvgPosition =
@@ -53,4 +64,6 @@ type alias Model =
     , linkPreviewEndPosition : Maybe RelativePosition
     , linkPreviewEndNode : Maybe Int
     , currentPage : Page
+    , inputMode : InputMode
+    , language : Language
     }

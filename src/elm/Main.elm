@@ -21,6 +21,8 @@ init =
         Nothing
         Nothing
         MainPage
+        NodeMode
+        English
     , Cmd.none
     )
 
