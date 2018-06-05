@@ -114,12 +114,11 @@ body
 .button:hover
 {
 	background-color: $hover-button-color;
-	border: 2px solid $hover-button-border;
 }
 
 .activeButton
 {
-	background-color: $hover-button-color !important;
+	background-color: $hover-button-color;
 	border: 2px solid $hover-button-border;
 }
 
